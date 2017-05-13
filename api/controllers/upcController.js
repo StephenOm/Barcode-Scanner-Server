@@ -2,12 +2,28 @@ const mongoose = require('mongoose'),
       Upc = mongoose.model('Upc');
 
 exports.findUpc = function(req, res) {
-  Upc.findOne(req.query, function(err, upc) {
-    if(err){
-      res.send('Product not found');
-    }
-    res.json(upc);
-  });
+  if(req.query.upc){
+    Upc.findOne(req.query, function(err, upc) {
+      if(err){
+        res.send(err);
+      }
+      res.json(upc);
+    });
+  } else {
+    Upc.find({}, function(err, upcs){
+      if(err){
+        res.send(err)
+      }
+      var upcsClean = upcs.map((item) => {
+          return {
+            product_name: item.product_name,
+            upc: item.upc
+          }
+        }
+      );
+      res.json(upcsClean);
+    });
+  }
 };
 
 exports.addUpc = function(req,res) {
