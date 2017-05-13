@@ -6,7 +6,12 @@ var express = require('express'),
     bodyParser = require('body-parser');
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/upc')
+
+if(process.env.NODE_ENV == 'production'){
+  mongoose.connect(process.env.MONGO_URL);
+} else {
+  mongoose.connect('mongodb://localhost/upc');
+}
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

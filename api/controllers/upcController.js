@@ -2,13 +2,10 @@ const mongoose = require('mongoose'),
       Upc = mongoose.model('Upc');
 
 exports.findUpc = function(req, res) {
-  console.log('wuts in req params===================================================================================================================', req.query);
   Upc.findOne(req.query, function(err, upc) {
     if(err){
-      console.log('not found============', err);
       res.send('Product not found');
     }
-    console.log('found', upc)
     res.json(upc);
   });
 };
