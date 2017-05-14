@@ -27,12 +27,16 @@ exports.findUpc = function(req, res) {
 };
 
 exports.addUpc = function(req,res) {
-  var new_task = new Upc(req.body);
-  new_task.save(function(err, upc) {
-    if(err)
-      res.send(err);
-    res.json(upc);
-  });
+  if(req.body.upc && req.body.product_name){
+    var new_task = new Upc(req.body);
+    new_task.save(function(err, upc) {
+      if(err)
+        res.send(err);
+      res.json(upc);
+    });
+  } else {
+    res.send("'product_name' and 'upc' required");
+  }
 };
 
 exports.removeUpc = function(req,res) {
