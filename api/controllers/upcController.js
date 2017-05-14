@@ -36,13 +36,18 @@ exports.addUpc = function(req,res) {
 };
 
 exports.removeUpc = function(req,res) {
-  Upc.findOneAndRemove(req.query, function(err, upc){
+  Upc.findOne(req.body, function(err, upc) {
     if (err)
       res.send(err);
     if(upc){
-      res.json({ message: 'UPC successfully deleted' })
+      Upc.remove({_id: upc._id}, function (err) {
+        if (err) res.send(err);
+        else {
+          res.json({ message: 'UPC successfully deleted' });
+        }
+      });
     } else {
-      res.json({ message: 'UPC not found'})
-    };
-  })
+      res.json({ message: 'UPC not found' });
+    }
+  });
 };
